@@ -120,7 +120,7 @@ u32 CurrentList;
 TaListFP* VerxexDataFP;
 bool ListIsFinished[5];
 
-f32 f16(u16 v)
+f32 INLINE f16(u16 v)
 {
 	u32 z=v<<16;
 	return *(f32*)&z;
