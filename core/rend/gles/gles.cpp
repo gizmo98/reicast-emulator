@@ -1435,6 +1435,8 @@ bool ProcessFrame(TA_context* ctx)
 	return true;
 }
 
+bool doCleanFrame = true;
+
 bool RenderFrame()
 {
 	DoCleanup();
@@ -1743,16 +1745,19 @@ bool RenderFrame()
 #endif
 	}
 
-	//Clear depth
-	//Color is cleared by the bgp
-	if (settings.rend.WideScreen)
-		glClearColor(pvrrc.verts.head()->col[2]/255.0f,pvrrc.verts.head()->col[1]/255.0f,pvrrc.verts.head()->col[0]/255.0f,1.0f);
-	else
-		glClearColor(0,0,0,1.0f);
+	if (doCleanFrame)
+	{
+		//Clear depth
+		//Color is cleared by the bgp
+		if (settings.rend.WideScreen)
+			glClearColor(pvrrc.verts.head()->col[2]/255.0f,pvrrc.verts.head()->col[1]/255.0f,pvrrc.verts.head()->col[0]/255.0f,1.0f);
+		else
+			glClearColor(0,0,0,1.0f);
 
-	glClearDepthf(0.f); glCheck();
-	glClear(GL_COLOR_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_DEPTH_BUFFER_BIT); glCheck();
-
+		glClearDepthf(0.f); glCheck();
+		glClear(GL_COLOR_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_DEPTH_BUFFER_BIT); glCheck();
+		doCleanFrame = false;
+	}
 
 	if (UsingAutoSort())
 		GenSorted();
